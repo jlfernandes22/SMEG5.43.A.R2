@@ -19,3 +19,5 @@ UI screenshots may document behavior but must not expose personal data or be pre
 ## Reporting physical results
 
 Clearly label a result as static analysis, emulator testing or physical observation. Report failures and incomplete behavior as well as successful screens. Do not claim a recovery button combination, universal hardware compatibility or successful networking without direct evidence for that exact configuration.
+
+Preserve the distinction between an observed elapsed interval and a recommended waiting time. The physical report's approximately 90-minute interval does not validate a 30-minute recovery rule. Include the active USB contents and whether the medium was removed before each restart. Read the [risk and liability notice](DISCLAIMER.md); publishing a result does not create a safety or recovery guarantee.

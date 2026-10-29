@@ -2,9 +2,10 @@ import unittest
 from hci_bridge import complete
 from hci_legacy_name import LegacyNameRequest, ENCRYPT_OFF, ENCRYPT_ON, AUTH_ON
 
-REQUEST = bytes.fromhex('0119040a5e4ef14d222201000000')
+# The peer is the deliberately synthetic address 02:00:00:00:00:01.
+REQUEST = bytes.fromhex('0119040a01000000000201000000')
 STATUS = bytes.fromhex('040f0400011904')
-NAME = bytes.fromhex('040711005e4ef14d2222') + b'OnePlus 12'
+NAME = bytes.fromhex('04071100010000000002') + b'OnePlus 12'
 
 class LegacyNameTests(unittest.TestCase):
     def configured(self):

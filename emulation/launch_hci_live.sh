@@ -16,6 +16,9 @@ if [[ -f "$case_dir/interactive-session.enable" ]]; then
     front_panel=1
 fi
 lease_args=(--case "$SMEG_CASE" --mode "$bridge_mode" --seconds "$lease_seconds")
+if [[ -n "${SMEG_HCI_PEER_ADDRESS:-}" ]]; then
+    lease_args+=(--peer "$SMEG_HCI_PEER_ADDRESS")
+fi
 if [[ "${SMEG_HCI_REUSE_HOST_BOND:-0}" == 1 || -f "$case_dir/reuse-host-bond.enable" ]]; then
     lease_args+=(--reuse-host-bond)
 fi

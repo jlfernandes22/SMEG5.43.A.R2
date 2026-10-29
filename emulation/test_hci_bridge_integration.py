@@ -1,4 +1,4 @@
-"""Offline socket tests. The live forwarding path uses a socketpair, never a radio."""
+"""Offline socket tests with synthetic peers; socketpairs never open a radio."""
 import json
 import os
 from pathlib import Path
@@ -16,7 +16,7 @@ class SocketTests(unittest.TestCase):
         fds=()
         if radio_fd is not None:cmd+=['--radio-fd',str(radio_fd)];fds=(radio_fd,)
         if bond_fd is not None:
-            cmd+=['--bond-fd',str(bond_fd),'--bond-peer','22:22:4D:F1:4E:5E'];fds+=(bond_fd,)
+            cmd+=['--bond-fd',str(bond_fd),'--bond-peer','02:00:00:00:00:01'];fds+=(bond_fd,)
         process=subprocess.Popen(cmd,pass_fds=fds,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
         deadline=time.monotonic()+3
         while not endpoint.exists() and process.poll() is None and time.monotonic()<deadline:time.sleep(.01)
@@ -79,12 +79,12 @@ class SocketTests(unittest.TestCase):
             encryption=bytes.fromhex('01220c0101');completion=bytes.fromhex('040e0401220c00')
             peer.sendall(encryption);self.assertEqual(controller.recv(65540),encryption)
             controller.send(completion);self.assertEqual(self.receive(peer,7),completion)
-            request=bytes.fromhex('0119040a5e4ef14d222201000000');peer.sendall(request)
+            request=bytes.fromhex('0119040a01000000000201000000');peer.sendall(request)
             self.assertEqual(controller.recv(65540),bytes.fromhex('01220c0100'))
             controller.send(completion);self.assertEqual(controller.recv(65540),request)
             status=bytes.fromhex('040f0400011904');controller.send(status)
             self.assertEqual(self.receive(peer,7),status)
-            payload=bytes.fromhex('005e4ef14d2222')+b'OnePlus 12'.ljust(248,b'\0')
+            payload=bytes.fromhex('00010000000002')+b'OnePlus 12'.ljust(248,b'\0')
             name=b'\x04\x07\xff'+payload;controller.send(name)
             self.assertEqual(controller.recv(65540),encryption)
             peer.settimeout(.05)
@@ -99,14 +99,14 @@ class SocketTests(unittest.TestCase):
             fd=os.memfd_create('test-only-synthetic-bond');self.addCleanup(os.close,fd)
             key=bytes(range(16));os.write(fd,key);os.lseek(fd,0,os.SEEK_SET)
             process,peer,_,log=self.start(d,'infineon-live',bridge.fileno(),fd)
-            address=bytes.fromhex('5e4ef14d2222')
+            address=bytes.fromhex('010000000002')
             controller.send(b'\x04\x17\x06'+address)
             self.assertEqual(controller.recv(65540),b'\x01\x0b\x04\x16'+address+key)
             controller.send(bytes.fromhex('040e0a010b0400')+address)
             peer.settimeout(.05)
             with self.assertRaises(socket.timeout):peer.recv(65540)
             peer.settimeout(2)
-            actual=bytes.fromhex('04030b0001005e4ef14d22220101');controller.send(actual)
+            actual=bytes.fromhex('04030b0001000100000000020101');controller.send(actual)
             self.assertEqual(self.receive(peer,len(actual)),actual)
             peer.close();self.assertEqual(process.wait(timeout=3),0)
             self.assertNotIn(key.hex(),log.read_text())

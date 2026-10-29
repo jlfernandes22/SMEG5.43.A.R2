@@ -6,15 +6,17 @@ from pathlib import Path
 import socket
 import struct
 import time
+from hci_peer import bluetooth_peer, peer_bytes
 
 p = argparse.ArgumentParser(description=__doc__)
+p.add_argument('--peer', type=bluetooth_peer, required=True, help='Explicit phone Bluetooth address; no default')
 p.add_argument('--radio-fd', type=int, required=True)
 p.add_argument('--output', type=Path, required=True)
 a = p.parse_args()
 radio = socket.socket(fileno=a.radio_fd)
 radio.settimeout(1)
 report = {'physical_car_access': False, 'pairing_requested': False,
-          'target': '22:22:4D:F1:4E:5E', 'transactions': []}
+          'explicit_peer_configured': True, 'transactions': []}
 started = time.monotonic()
 phase = 'cold'
 
@@ -56,7 +58,7 @@ try:
     command(0x0c03)
     command(0x1001)
     command(0x1003)
-    address = bytes.fromhex('5e4ef14d2222')
+    address = peer_bytes(a.peer)
     # Cold request with an explicitly invalid/unused clock-offset hint.
     first = command(0x0419, address + b'\x01\0\0\0', remote_name=True)
     if first.get('name_status') == 0:

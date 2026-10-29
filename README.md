@@ -4,11 +4,19 @@ A reverse-engineering and emulation workbench for Peugeot/Citroën SMEG+ firmwar
 
 The project provides a custom QEMU machine, a host graphics bridge, firmware inspection and packaging tools, and experiments with the INT_E application profile and native theme resources. Original firmware, vehicle databases, cryptographic key material and prepared installation media are not distributed.
 
+## Project status and hardware risk
+
+Ready for publication as **experimental research source**, with reproducible emulator checks and documented limits. It is not a certified or universal vehicle update. Hardware experiments can brick a head unit; the project is provided without warranty, and liability is disclaimed to the extent permitted by applicable law. Read the [risk and liability notice](DISCLAIMER.md) before hardware use.
+
+One owner reported normal physical boot and additional themes after an extended shutdown, following an initial persistent Peugeot-logo failure. SRC + MENU had not restored startup. The later successful attempt occurred approximately 90 minutes after the failure report; **30 minutes is an unverified suggested wait, not a measured or guaranteed fix**. The [physical test report](docs/PHYSICAL_TEST_REPORT.md) separates that observation from the emulator explanation and reset-only experiments.
+
 ## Documentation
 
 - [Emulation: build, boot and graphics](docs/EMULATION.md)
 - [Reverse engineering: platform, update integrity and INT_E](docs/REVERSE_ENGINEERING.md)
 - [Deployment: theme packages, validation and recovery limits](docs/DEPLOYMENT.md)
+- [Physical test: logo stall, shutdown and later successful boot](docs/PHYSICAL_TEST_REPORT.md)
+- [Risk, warranty and liability notice](DISCLAIMER.md)
 - [Third-party sources and licenses](THIRD_PARTY_NOTICES.md)
 - [Contributing and reporting results](CONTRIBUTING.md)
 
@@ -19,7 +27,7 @@ The project provides a custom QEMU machine, a host graphics bridge, firmware ins
 | Platform | Big-endian PowerPC modules and VxWorks 6.7 BSP identified | Supplied firmware analysis |
 | Emulation | Kernel, filesystems and native application UI run under QEMU | Synthetic board and peripheral models |
 | Graphics | Native drawing calls rendered through a host software graphics bridge | Original MBX GPU command execution remains incomplete |
-| Themes | Eight themes listed after native USB installation and USB-free cold boot | Emulator verified; expanded physical installation remains unverified |
+| Themes | Eight themes listed after native USB installation and USB-free cold boot | Emulator verified; one owner later reported physical boot with additional themes visible, following an initial logo stall; all eight were not individually verified on hardware |
 | INT_E Internet UI | Eligibility and policy experiments expose Internet screens with NAV resources | A working phone network connection or external-network browser page load is not established |
 
 ![Eight theme interfaces rendered in the emulator](artifacts/screenshots/themes256-all-eight-fm-contact.png)
@@ -59,6 +67,8 @@ bash emulation/test_soft_gles.sh
 
 The [deployment guide](docs/DEPLOYMENT.md) describes the theme source, CRC/INF generation, native progress display, validation gates and remaining physical constraints. It is not a universal vehicle update or guaranteed recovery procedure.
 
+Remove active maintenance USB media before restarting. A used installer can still inhibit application startup even when its one-use guard prevents another installation. The reset-only helper sources are separate emulator-tested research tools; that helper was not used in the reported physical recovery and has not been validated as a physical recovery method.
+
 ## Repository layout
 
 ```text
@@ -76,3 +86,5 @@ Build outputs, upstream checkouts, raw NAND images, original car exports, databa
 Project-authored code is distributed under **GPL-2.0-or-later**, except where a file states another license. Third-party notices and licenses remain in their original files; the PowerVR texture decompressor is MIT licensed. See [LICENSE](LICENSE) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 This is an independent research project, without affiliation with Peugeot, Citroën, Stellantis, Wind River or NXP. Product names identify the systems studied.
+
+The [risk, warranty and liability notice](DISCLAIMER.md) supplements the license's existing notices without restricting its granted rights. No disclaimer guarantees immunity from legal claims.

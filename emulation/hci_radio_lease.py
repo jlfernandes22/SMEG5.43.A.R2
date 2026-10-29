@@ -2,6 +2,7 @@
 """Lease one Linux Bluetooth controller to an unprivileged H4 bridge, then restore BlueZ."""
 import argparse,json,os,pwd,socket,subprocess,sys,time,signal,re,stat,configparser,fcntl
 from pathlib import Path
+from hci_peer import bluetooth_peer
 ROOT=Path(__file__).resolve().parent.parent
 
 def run(*args,timeout=10,check=True):
@@ -17,10 +18,12 @@ def main():
     p.add_argument('--mode',choices=['live','infineon-live','diagnostic'],default='live')
     p.add_argument('--plan',action='store_true')
     p.add_argument('--reuse-host-bond',action='store_true')
+    p.add_argument('--peer',type=bluetooth_peer,help='Explicit phone address; required for diagnostics or host-bond reuse')
     a=p.parse_args()
     if not 0<=a.controller<=15 or not 30<=a.seconds<=900:p.error('controller0..15, lease30..900seconds')
     if not re.fullmatch('[a-z0-9_-]+',a.case):p.error('invalid case')
     if a.reuse_host_bond and a.mode!='infineon-live':p.error('Host bond reuse requires infineon-live')
+    if (a.reuse_host_bond or a.mode=='diagnostic') and not a.peer:p.error('Provide --peer for diagnostics or host-bond reuse')
     uid=int(os.environ.get('PKEXEC_UID',os.environ.get('SUDO_UID',os.getuid())))
     if not uid:p.error('Invoke through pkexec/sudo from the desktop user account')
     account=pwd.getpwuid(uid);case=ROOT/'artifacts/phase4/runs'/a.case
@@ -39,12 +42,12 @@ def main():
     adapter=f'/org/bluez/hci{a.controller}';radio=None;child=None;powered=False;profiles=[];connected=[];bond_fd=None
     try:
         if a.reuse_host_bond:
-            peer='22:22:4D:F1:4E:5E'
+            peer=a.peer
             adapter_address=run('busctl','--system','get-property','org.bluez',adapter,'org.bluez.Adapter1','Address').stdout.split('"')[1].upper()
             if not re.fullmatch('[0-9A-F]{2}(:[0-9A-F]{2}){5}',adapter_address):raise RuntimeError('Invalid adapter address')
             device=adapter+'/dev_'+peer.replace(':','_')
             if run('busctl','--system','get-property','org.bluez',device,'org.bluez.Device1','Paired').stdout.strip()!='b true':
-                raise RuntimeError('Known OnePlus target is not paired to the host')
+                raise RuntimeError('Configured phone target is not paired to the host')
             config=configparser.ConfigParser()
             with (Path('/var/lib/bluetooth')/adapter_address/peer/'info').open() as source:config.read_file(source)
             key=config['LinkKey']['Key']
@@ -52,7 +55,7 @@ def main():
             bond_fd=os.memfd_create('smeg-existing-bond',os.MFD_CLOEXEC|os.MFD_ALLOW_SEALING)
             os.write(bond_fd,bytes.fromhex(key));os.lseek(bond_fd,0,os.SEEK_SET)
             fcntl.fcntl(bond_fd,fcntl.F_ADD_SEALS,fcntl.F_SEAL_WRITE|fcntl.F_SEAL_SHRINK|fcntl.F_SEAL_GROW|fcntl.F_SEAL_SEAL)
-            print(json.dumps({'existing_host_bond_loaded':True,'peer':peer,'key_type':config['LinkKey'].getint('Type'),
+            print(json.dumps({'existing_host_bond_loaded':True,'explicit_peer_configured':True,'key_type':config['LinkKey'].getint('Type'),
                               'storage':'sealed anonymous memory; no key printed or written'}),flush=True)
         powered=run('busctl','--system','get-property','org.bluez',adapter,'org.bluez.Adapter1','Powered').stdout.strip()=='b true'
         for line in run('bluetoothctl','devices','Connected').stdout.splitlines():
@@ -68,7 +71,7 @@ def main():
             os.setgroups([]);os.setgid(account.pw_gid);os.setuid(uid)
         if a.mode=='diagnostic':
             cmd=[sys.executable,str(ROOT/'emulation/hci_radio_diagnostic.py'),
-                 '--radio-fd',str(radio.fileno()),'--output',str(case/'radio-diagnostic.json')]
+                  '--radio-fd',str(radio.fileno()),'--output',str(case/'radio-diagnostic.json'),'--peer',a.peer]
         else:
             cmd=[sys.executable,str(ROOT/'emulation/hci_bridge.py'),'--mode',a.mode,'--controller',str(a.controller),
                  '--radio-fd',str(radio.fileno()),'--socket',str(case/'hci.sock'),'--log',str(case/'hci.jsonl')]

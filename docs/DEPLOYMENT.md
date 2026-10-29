@@ -1,8 +1,12 @@
 # Theme package construction and deployment boundaries
 
+**Experimental hardware work can brick a head unit.** Read the [risk, warranty and liability notice](../DISCLAIMER.md) and the [physical test report](PHYSICAL_TEST_REPORT.md) before using these tools on hardware. No universal safety or recovery guarantee is provided.
+
 This document describes the theme-only USB workflow tested with SMEG5.43.A.R2. It separates the source package, native installer, emulator validation, physical preparation and recovery limits. It does not establish a universal update procedure for other SMEG revisions or vehicles.
 
-The expanded eight-theme installer passed native installation and a USB-free cold boot in a copied INT_E emulator fixture. That result does not certify physical NAND geometry, power-loss recovery or compatibility with every unit. The current physical test has not established that the six additional themes install successfully on the car.
+The expanded eight-theme installer passed native installation and a USB-free cold boot in a copied INT_E emulator fixture. In one physical test, the owner reported installer success, a persistent Peugeot logo after restarting with the used USB inserted, and a later normal boot with new themes visible after a period switched off. The returned USB receipts recorded success and valid readback of all eight payloads; all eight themes were not individually checked on the car. See [PHYSICAL_TEST_REPORT.md](PHYSICAL_TEST_REPORT.md) for the observations, emulator diagnosis and recovery limits. These results do not certify physical NAND geometry, power-loss recovery or compatibility with every unit.
+
+**After confirmed installation completion, remove the installer USB before any restart.** A used installer can still enter the native maintenance boot path even when its repeat-installation guard refuses another write.
 
 ## 1. Scope and inputs
 
@@ -152,15 +156,17 @@ The physical writer also requires private preparation proof and prior physical r
 
 ## 7. Physical theme-only test sequence
 
-The following describes the prepared experimental installer, not an assertion that it works on an untested vehicle:
+The following describes the prepared experimental installer. The [physical test report](PHYSICAL_TEST_REPORT.md) records one owner's result and the logo incident; it does not establish compatibility with an untested vehicle:
 
 1. Park and keep the head unit reliably powered. Insert only the explicitly prepared, tested theme USB. The maintenance descriptor starts the installer automatically; SPYSTORE and an on-unit Start button are not required.
 2. A brief normal media screen can precede the progress popup while original data is backed up. Do not interrupt the operation, press the popup's X, remove the USB or switch off the unit during erasure/writing. Labelled native-write stages can take several minutes.
-3. Wait for the localized success message. Only then acknowledge X, allow the normal UI to return and remove the USB. There is no automatic reboot.
-4. Fully shut down the head unit normally and restart without the USB. A rapid ignition off/on can retain the previous session and catalogue cache.
+3. Wait for the localized success message. Only then acknowledge X, allow the normal UI to return and **remove the USB before any restart**. There is no automatic reboot. Do not restart with the used installer inserted.
+4. Shut down the head unit normally and restart with the installer USB removed. A rapid ignition off/on or a dark display does not establish complete CPU power removal and can retain the previous session or catalogue cache.
 5. Open the normal theme selector and verify the new entries. Preserve the USB's generated `SMEG_BACKUP` logs for inspection.
 
-The installer is intentionally one-use: the existing backup-directory guard prevents a repeat insertion from becoming an uncontrolled retry. If it reports failure, retain the stick and inspect its logs on the host. Do not remove that guard or repeatedly reinsert it to force another attempt.
+The installer is intentionally one-use: the existing backup-directory guard prevents a repeat insertion from becoming an uncontrolled retry. It does not prevent the native BSP/SSM maintenance callback from running before the module's guard. QEMU reproduced application startup being skipped in that path; removing the USB after the stall did not replay startup. If the installer reports failure, retain the stick and inspect its logs on the host. Do not remove the guard or repeatedly reinsert it to force another attempt.
+
+If a static logo persists after a completed installation, stop repeating resets and keep the used installer removed. Preserve the observations and USB logs. The owner later reported a normal boot after a period with the car switched off, before using the prepared reset-only helper. An extended normal car-off period can be observed without further flashing, but no guaranteed duration is established. The owner's suggested 30 minutes is unverified: it is an observation period, not a measured recovery time or OEM procedure. Do not apply this observation by interrupting an active erase or write.
 
 ## 8. Stock Restore and recovery limits
 
@@ -182,7 +188,11 @@ python3 scripts/build_stock_restore.py \
 
 Keep any restore medium separate from experimental media and do not present it as a guaranteed fallback. Read its validation report and the corresponding native/cold-boot tests before considering it on hardware.
 
-If the main screen becomes black or loops, this project supplies no validated force-recovery sequence. Preserve the package and logs, avoid arbitrary button combinations and repeated interrupted writes, and use an independently established recovery/service method for the exact unit. Never infer physical recovery capability from the direct-kernel QEMU boot path, which bypasses the real reset/bootloader chain.
+The separate reset-only helper recovered the modeled unit through native `EmergencyReboot` in QEMU, including hotplug after the reproduced used-USB stall. It has not been tested on the physical car. The owner recovered before using it, so that recovery is not evidence of physical helper effectiveness. See [PHYSICAL_TEST_REPORT.md](PHYSICAL_TEST_REPORT.md).
+
+Do not run the reset-only helper on a unit that has returned to normal startup. Keep active maintenance USB media removed; it is not ordinary music/storage media until its maintenance entry files have been removed.
+
+If the main screen remains black, shows a static logo or loops, this project supplies no validated force-recovery sequence. Stop repeating resets or installer attempts, preserve the package and logs, and use an independently established recovery/service method for the exact unit if the problem persists. Never infer physical recovery capability from the direct-kernel QEMU boot path, which bypasses the real reset/bootloader chain.
 
 ## 9. Internet, custom apps and phone display mirroring
 
