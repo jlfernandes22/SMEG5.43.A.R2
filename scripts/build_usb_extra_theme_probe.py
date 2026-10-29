@@ -1,0 +1,144 @@
+#!/usr/bin/env python3
+"""Build an isolated QEMU-only backup-then-extra-theme-flags native USB probe.
+
+Only display.Harm_1/2/3/4/7/8.0 are requested. No replacement database or firmware payload.
+No block devices, physical USB writes, VM operations or RAM policy patches.
+CRC metadata is not a vendor signature or physical deployment approval.
+"""
+import argparse
+import gzip
+import hashlib
+import json
+import os
+from pathlib import Path
+import struct
+import subprocess
+import tempfile
+
+from smeg_db_inf import crc16
+
+ROOT = Path(__file__).resolve().parents[1]
+ALLOWED = ROOT / "artifacts/phase19/extra-theme-flags"
+SYMBOLS = [
+    "_ZN6UP_MOD8InstanceEv",
+    "_ZN6UP_MOD13GetConfigKeysERK9CMMStringS2_R9CMMUPKeys",
+    "_ZN6UP_MOD22SetConfigKeysImmediateERK9CMMUPKeys",
+    "_ZN9CMMStringC1EPKci28t_cmmstring_characterSetType25t_cmmstring_charOrStrType",
+    "_ZN9CMMUPKeysC1Ev",
+    "_ZNK9CMMUPKeys10GetKeyBoolERK9CMMStringS2_Rbi",
+    "_ZN9CMMUPKeys10AddKeyBoolERK9CMMStringS2_bi",
+    "_ZNK9CMMUPKeys9GetNbKeysEv",
+    "_ZN9CMMUPKeysD1Ev", "_ZN9CMMStringD1Ev",
+]
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    output = args.output.resolve()
+    if not output.is_relative_to(ALLOWED) or output.suffix != ".raw" or output.exists():
+        parser.error("A new regular .raw image under artifacts/phase19/extra-theme-flags is required")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    generated = [output.with_suffix(".json"), output.parent / "usb_warmlight_api_fingerprints.h",
+                 output.parent / "extra_theme_flags.out"]
+    if any(path.exists() for path in generated):
+        parser.error("Generated build artifacts already exist; choose a new empty build directory")
+    symbols_path = ROOT / "artifacts/phase2/filesystems/AUDIO_BT_256/system/Application/PKG/abs_symbols_base.txt.gz"
+    symbol_lines = gzip.decompress(symbols_path.read_bytes()).decode("latin1").splitlines()
+    lookup = {parts[2]: int(parts[0], 16) for line in symbol_lines
+              if len(parts := line.split()) == 3}
+    app_path = ROOT / "artifacts/phase2/applications/AUDIO_BT_256/app.bin"
+    image = app_path.read_bytes()
+    checks = []
+    for name in SYMBOLS:
+        address = lookup[name]
+        raw = image[address - 0x1000000:address - 0x1000000 + 64]
+        if len(raw) != 64:
+            raise ValueError("Short native API fingerprint")
+        value = 2166136261
+        for byte in raw:
+            value = ((value ^ byte) * 16777619) & 0xffffffff
+        checks.append({"symbol": name, "address": address, "bytes": 64, "fnv1a": value})
+    generated[1].write_text(
+        "struct WarmApiCheck {unsigned int address,bytes,hash;};\n"
+        "static const struct WarmApiCheck warm_api_checks[] = {\n" +
+        "\n".join("    {0x%xu,64,0x%xu}," % (row["address"], row["fnv1a"]) for row in checks) + "\n};\n")
+    source = ROOT / "emulation/usb_extra_theme_flags_sandbox.c"
+    compile_command = ["clang", "--target=powerpc-unknown-linux-gnu", "-mbig-endian", "-m32",
+                       "-mlongcall", "-ffreestanding", "-fno-pic", "-fno-stack-protector",
+                       "-fno-unwind-tables", "-fno-asynchronous-unwind-tables", "-msoft-float",
+                       "-I", str(output.parent), "-I", str(ROOT / "emulation"),
+                       "-O2", "-Wall", "-Wextra", "-Werror", "-c", str(source), "-o", str(generated[2])]
+    subprocess.run(compile_command, check=True)
+    payload = generated[2].read_bytes()
+    if payload[:6] != b"\x7fELF\x01\x02" or struct.unpack_from(">H", payload, 18)[0] != 20:
+        raise ValueError("Expected PPC32 big-endian ELF")
+    basename = "extra_theme_flags.out"
+    body = (f"{crc16(payload):04x}\r\nVER:SMEG5.43.A.R2\r\nTYPE:RELOCABLE\r\nID:0\r\n"
+            f"COMPRESSED:NO\r\nSIZE:{len(payload)}\r\nENTRY:YES\r\n").encode()
+    doctor = ("0000\r\nACTION:TemporaryBootRom\r\n"
+              "LOAD_AND_EXECUTE:/bd0/FLYING/extra_theme_flags.out\r\n").encode()
+    files = {"FLYING/" + basename: payload,
+             "FLYING/" + basename + ".inf": f"{crc16(body):04x}".encode() + body,
+             "FLYING/doctor_smeg_plus_i.inf": f"{crc16(doctor):04x}".encode() + doctor}
+
+    def run(*command):
+        return subprocess.run(command, check=True, capture_output=True,
+                              env=dict(os.environ, MTOOLS_SKIP_CHECK="1"))
+
+    offset, size = 1048576, 128 * 1024 * 1024
+    with tempfile.TemporaryDirectory(prefix="smeg-warmlight-usb-") as tmp_name:
+        tmp = Path(tmp_name)
+        partition = tmp / "partition.fat"
+        with partition.open("xb") as handle:
+            handle.truncate(size)
+        run("mkfs.vfat", "-F", "32", "-n", "QEMU_EXTRA", str(partition))
+        mbr = bytearray(512)
+        mbr[446:462] = struct.pack("<B3sB3sII", 0, b"\xfe\xff\xff", 0x0c,
+                                   b"\xfe\xff\xff", offset // 512, size // 512)
+        mbr[510:512] = b"\x55\xaa"
+        with output.open("xb") as handle:
+            handle.write(mbr)
+            handle.seek(offset)
+            with partition.open("rb") as src:
+                while chunk := src.read(1024 * 1024):
+                    handle.write(chunk)
+        spec = str(output) + "@@" + str(offset)
+        run("mmd", "-i", spec, "::/FLYING")
+        for index, (name, data) in enumerate(files.items()):
+            source_file, readback = tmp / str(index), tmp / ("readback" + str(index))
+            source_file.write_bytes(data)
+            run("mcopy", "-i", spec, str(source_file), "::/" + name)
+            run("mcopy", "-i", spec, "::/" + name, str(readback))
+            if readback.read_bytes() != data:
+                raise ValueError("Virtual FAT readback mismatch")
+    metadata = {
+        "emulator_only": True, "physical_car_approved": False, "physical_device_access": False,
+        "image": str(output), "image_sha256": sha(output.read_bytes()),
+        "partition": {"offset": offset, "bytes": size, "filesystem": "FAT32"},
+        "entry": "smeg_usb_readonly_backup", "supported_profile": "AUDIO_BT_256_5.43",
+        "native_request": {"section": "display", "keys": ["Harm_1", "Harm_2", "Harm_3", "Harm_4", "Harm_7", "Harm_8"], "index": 0,
+                           "type": "bool", "accepted_before": [0, 1], "value": 1,
+                           "already_enabled": "no setter call"},
+        "backup_before_set": True, "original_up_config_pair_readback_before_set": False,
+        "no_database_replacement": True, "no_firmware_or_theme_resources": True,
+        "no_ram_policy_patch": True, "no_automatic_reboot": True,
+        "checksum_is_not_vendor_signature": True,
+        "build_app_sha256": sha(image), "source_sha256": sha(source.read_bytes()),
+        "backup_source_sha256": sha((ROOT / "emulation/usb_backup_readonly.c").read_bytes()),
+        "compile_command": compile_command, "api_checks": checks,
+        "files": [{"path": name, "bytes": len(data), "sha256": sha(data)} for name, data in files.items()],
+    }
+    generated[0].write_text(json.dumps(metadata, indent=2) + "\n")
+    print(json.dumps({"image": str(output), "image_sha256": metadata["image_sha256"],
+                      "metadata": str(generated[0]), "module_bytes": len(payload),
+                      "emulator_only": True, "physical_car_approved": False}))
+
+
+if __name__ == "__main__":
+    main()

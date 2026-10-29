@@ -1,0 +1,1126 @@
+{
+  "source": {
+    "path": "artifacts/phase2/package/SMEG_PLUS_UPG/BSP/SMEG_PLUS_512/vxWorks.bin",
+    "sha256": "e07a4e61e3c80b31e0d9bd795d3b099cfcb9cab32520086a9a8d9bc2fa1135d6",
+    "load_base": "0x200000"
+  },
+  "supported_is_not_installed": "Compiled identification tables prove the firmware can recognize these IDs. They do not identify the physical installed chip.",
+  "decode_function": "0x5c4ad8",
+  "manufacturer_dispatch_table": "0x74265c",
+  "decode_observation": "Manufacturer matched against byte0 or byte1; Samsung subdecoder0x5c4bd0 compares device byte1 only and returns matching8-byte entry.",
+  "manufacturer_tables": [
+    {
+      "manufacturer_id": "ad",
+      "conventional_name": "Hynix",
+      "decoder_address": "0x5c4c58",
+      "table_address": "0x742c00",
+      "entries": [
+        {
+          "entry_address": "0x742c00",
+          "id_byte1": "35",
+          "flags_byte": "21",
+          "class_address": "0x74256c",
+          "raw": "352100000074256c"
+        },
+        {
+          "entry_address": "0x742c08",
+          "id_byte1": "36",
+          "flags_byte": "21",
+          "class_address": "0x742580",
+          "raw": "3621000000742580"
+        },
+        {
+          "entry_address": "0x742c10",
+          "id_byte1": "45",
+          "flags_byte": "32",
+          "class_address": "0x74256c",
+          "raw": "453200000074256c"
+        },
+        {
+          "entry_address": "0x742c18",
+          "id_byte1": "46",
+          "flags_byte": "32",
+          "class_address": "0x742580",
+          "raw": "4632000000742580"
+        },
+        {
+          "entry_address": "0x742c20",
+          "id_byte1": "55",
+          "flags_byte": "32",
+          "class_address": "0x74256c",
+          "raw": "553200000074256c"
+        },
+        {
+          "entry_address": "0x742c28",
+          "id_byte1": "56",
+          "flags_byte": "32",
+          "class_address": "0x742580",
+          "raw": "5632000000742580"
+        },
+        {
+          "entry_address": "0x742c30",
+          "id_byte1": "75",
+          "flags_byte": "21",
+          "class_address": "0x74256c",
+          "raw": "752100000074256c"
+        },
+        {
+          "entry_address": "0x742c38",
+          "id_byte1": "76",
+          "flags_byte": "21",
+          "class_address": "0x742580",
+          "raw": "7621000000742580"
+        },
+        {
+          "entry_address": "0x742c40",
+          "id_byte1": "aa",
+          "flags_byte": "32",
+          "class_address": "0x742620",
+          "raw": "aa32000000742620"
+        },
+        {
+          "entry_address": "0x742c48",
+          "id_byte1": "ba",
+          "flags_byte": "32",
+          "class_address": "0x742620",
+          "raw": "ba32000000742620"
+        },
+        {
+          "entry_address": "0x742c50",
+          "id_byte1": "ca",
+          "flags_byte": "31",
+          "class_address": "0x742620",
+          "raw": "ca31000000742620"
+        },
+        {
+          "entry_address": "0x742c58",
+          "id_byte1": "da",
+          "flags_byte": "31",
+          "class_address": "0x742620",
+          "raw": "da31000000742620"
+        },
+        {
+          "entry_address": "0x742c60",
+          "id_byte1": "d3",
+          "flags_byte": "31",
+          "class_address": "0x742648",
+          "raw": "d331000000742648"
+        },
+        {
+          "entry_address": "0x742c68",
+          "id_byte1": "dc",
+          "flags_byte": "31",
+          "class_address": "0x742648",
+          "raw": "dc31000000742648"
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "2c",
+      "conventional_name": "Micron",
+      "decoder_address": "0x5c4c94",
+      "table_address": "0x742c84",
+      "entries": [
+        {
+          "entry_address": "0x742c84",
+          "id_byte1": "a1",
+          "flags_byte": "31",
+          "class_address": "0x74260c",
+          "raw": "a13100000074260c00ffffff"
+        },
+        {
+          "entry_address": "0x742c90",
+          "id_byte1": "b1",
+          "flags_byte": "32",
+          "class_address": "0x74260c",
+          "raw": "b13200000074260c00ffffff"
+        },
+        {
+          "entry_address": "0x742c9c",
+          "id_byte1": "da",
+          "flags_byte": "31",
+          "class_address": "0x742620",
+          "raw": "da3100000074262000ffffff"
+        },
+        {
+          "entry_address": "0x742ca8",
+          "id_byte1": "ca",
+          "flags_byte": "32",
+          "class_address": "0x742620",
+          "raw": "ca3200000074262000ffffff"
+        },
+        {
+          "entry_address": "0x742cb4",
+          "id_byte1": "aa",
+          "flags_byte": "31",
+          "class_address": "0x742620",
+          "raw": "aa3100000074262000ffffff"
+        },
+        {
+          "entry_address": "0x742cc0",
+          "id_byte1": "ba",
+          "flags_byte": "32",
+          "class_address": "0x742620",
+          "raw": "ba3200000074262000ffffff"
+        },
+        {
+          "entry_address": "0x742ccc",
+          "id_byte1": "dc",
+          "flags_byte": "31",
+          "class_address": "0x742c70",
+          "raw": "dc31000000742c7080909554"
+        },
+        {
+          "entry_address": "0x742cd8",
+          "id_byte1": "dc",
+          "flags_byte": "31",
+          "class_address": "0x742634",
+          "raw": "dc3100000074263400ffffff"
+        },
+        {
+          "entry_address": "0x742ce4",
+          "id_byte1": "cc",
+          "flags_byte": "32",
+          "class_address": "0x742634",
+          "raw": "cc3200000074263400ffffff"
+        },
+        {
+          "entry_address": "0x742cf0",
+          "id_byte1": "d3",
+          "flags_byte": "31",
+          "class_address": "0x742648",
+          "raw": "d33100000074264800ffffff"
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "ec",
+      "conventional_name": "Samsung",
+      "decoder_address": "0x5c4bd0",
+      "table_address": "0x7428a0",
+      "entries": [
+        {
+          "entry_address": "0x7428a0",
+          "id_byte1": "e6",
+          "flags_byte": "21",
+          "class_address": "0x742544",
+          "raw": "e621000000742544"
+        },
+        {
+          "entry_address": "0x7428a8",
+          "id_byte1": "73",
+          "flags_byte": "21",
+          "class_address": "0x742558",
+          "raw": "7321000000742558"
+        },
+        {
+          "entry_address": "0x7428b0",
+          "id_byte1": "75",
+          "flags_byte": "21",
+          "class_address": "0x74256c",
+          "raw": "752100000074256c"
+        },
+        {
+          "entry_address": "0x7428b8",
+          "id_byte1": "46",
+          "flags_byte": "32",
+          "class_address": "0x742580",
+          "raw": "4632000000742580"
+        },
+        {
+          "entry_address": "0x7428c0",
+          "id_byte1": "76",
+          "flags_byte": "21",
+          "class_address": "0x742580",
+          "raw": "7621000000742580"
+        },
+        {
+          "entry_address": "0x7428c8",
+          "id_byte1": "79",
+          "flags_byte": "21",
+          "class_address": "0x742594",
+          "raw": "7921000000742594"
+        },
+        {
+          "entry_address": "0x7428d0",
+          "id_byte1": "a1",
+          "flags_byte": "31",
+          "class_address": "0x74260c",
+          "raw": "a13100000074260c"
+        },
+        {
+          "entry_address": "0x7428d8",
+          "id_byte1": "b1",
+          "flags_byte": "32",
+          "class_address": "0x74260c",
+          "raw": "b13200000074260c"
+        },
+        {
+          "entry_address": "0x7428e0",
+          "id_byte1": "c1",
+          "flags_byte": "32",
+          "class_address": "0x74260c",
+          "raw": "c13200000074260c"
+        },
+        {
+          "entry_address": "0x7428e8",
+          "id_byte1": "f1",
+          "flags_byte": "31",
+          "class_address": "0x74260c",
+          "raw": "f13100000074260c"
+        },
+        {
+          "entry_address": "0x7428f0",
+          "id_byte1": "39",
+          "flags_byte": "21",
+          "class_address": "0x742544",
+          "raw": "3921000000742544"
+        },
+        {
+          "entry_address": "0x7428f8",
+          "id_byte1": "43",
+          "flags_byte": "32",
+          "class_address": "0x742558",
+          "raw": "4332000000742558"
+        },
+        {
+          "entry_address": "0x742900",
+          "id_byte1": "53",
+          "flags_byte": "32",
+          "class_address": "0x742558",
+          "raw": "5332000000742558"
+        },
+        {
+          "entry_address": "0x742908",
+          "id_byte1": "33",
+          "flags_byte": "21",
+          "class_address": "0x742558",
+          "raw": "3321000000742558"
+        },
+        {
+          "entry_address": "0x742910",
+          "id_byte1": "35",
+          "flags_byte": "21",
+          "class_address": "0x74256c",
+          "raw": "352100000074256c"
+        },
+        {
+          "entry_address": "0x742918",
+          "id_byte1": "36",
+          "flags_byte": "21",
+          "class_address": "0x742580",
+          "raw": "3621000000742580"
+        },
+        {
+          "entry_address": "0x742920",
+          "id_byte1": "45",
+          "flags_byte": "32",
+          "class_address": "0x74256c",
+          "raw": "453200000074256c"
+        },
+        {
+          "entry_address": "0x742928",
+          "id_byte1": "56",
+          "flags_byte": "32",
+          "class_address": "0x742580",
+          "raw": "5632000000742580"
+        },
+        {
+          "entry_address": "0x742930",
+          "id_byte1": "55",
+          "flags_byte": "32",
+          "class_address": "0x74256c",
+          "raw": "553200000074256c"
+        },
+        {
+          "entry_address": "0x742938",
+          "id_byte1": "72",
+          "flags_byte": "32",
+          "class_address": "0x742594",
+          "raw": "7232000000742594"
+        },
+        {
+          "entry_address": "0x742940",
+          "id_byte1": "74",
+          "flags_byte": "32",
+          "class_address": "0x742594",
+          "raw": "7432000000742594"
+        },
+        {
+          "entry_address": "0x742948",
+          "id_byte1": "78",
+          "flags_byte": "21",
+          "class_address": "0x742594",
+          "raw": "7821000000742594"
+        },
+        {
+          "entry_address": "0x742950",
+          "id_byte1": "aa",
+          "flags_byte": "31",
+          "class_address": "0x742620",
+          "raw": "aa31000000742620"
+        },
+        {
+          "entry_address": "0x742958",
+          "id_byte1": "ac",
+          "flags_byte": "31",
+          "class_address": "0x742634",
+          "raw": "ac31000000742634"
+        },
+        {
+          "entry_address": "0x742960",
+          "id_byte1": "ba",
+          "flags_byte": "32",
+          "class_address": "0x742620",
+          "raw": "ba32000000742620"
+        },
+        {
+          "entry_address": "0x742968",
+          "id_byte1": "bc",
+          "flags_byte": "32",
+          "class_address": "0x742634",
+          "raw": "bc32000000742634"
+        },
+        {
+          "entry_address": "0x742970",
+          "id_byte1": "ca",
+          "flags_byte": "32",
+          "class_address": "0x742620",
+          "raw": "ca32000000742620"
+        },
+        {
+          "entry_address": "0x742978",
+          "id_byte1": "cc",
+          "flags_byte": "32",
+          "class_address": "0x742634",
+          "raw": "cc32000000742634"
+        },
+        {
+          "entry_address": "0x742980",
+          "id_byte1": "da",
+          "flags_byte": "31",
+          "class_address": "0x742620",
+          "raw": "da31000000742620"
+        },
+        {
+          "entry_address": "0x742988",
+          "id_byte1": "dc",
+          "flags_byte": "31",
+          "class_address": "0x742634",
+          "raw": "dc31000000742634"
+        },
+        {
+          "entry_address": "0x742990",
+          "id_byte1": "d3",
+          "flags_byte": "31",
+          "class_address": "0x742648",
+          "raw": "d331000000742648"
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "01",
+      "conventional_name": "Spansion/AMD",
+      "decoder_address": "0x5c4c0c",
+      "table_address": "0x742a38",
+      "entries": [
+        {
+          "entry_address": "0x742a38",
+          "id_byte1": "e6",
+          "flags_byte": "01",
+          "class_address": "0x742544",
+          "raw": "e60100000074254400000000"
+        },
+        {
+          "entry_address": "0x742a44",
+          "id_byte1": "e6",
+          "flags_byte": "01",
+          "class_address": "0x742544",
+          "raw": "e60100000074254401000000"
+        },
+        {
+          "entry_address": "0x742a50",
+          "id_byte1": "73",
+          "flags_byte": "21",
+          "class_address": "0x742998",
+          "raw": "732100000074299800000000"
+        },
+        {
+          "entry_address": "0x742a5c",
+          "id_byte1": "73",
+          "flags_byte": "01",
+          "class_address": "0x742998",
+          "raw": "730100000074299801000000"
+        },
+        {
+          "entry_address": "0x742a68",
+          "id_byte1": "53",
+          "flags_byte": "32",
+          "class_address": "0x742998",
+          "raw": "533200000074299800000000"
+        },
+        {
+          "entry_address": "0x742a74",
+          "id_byte1": "53",
+          "flags_byte": "02",
+          "class_address": "0x742998",
+          "raw": "530200000074299801000000"
+        },
+        {
+          "entry_address": "0x742a80",
+          "id_byte1": "75",
+          "flags_byte": "21",
+          "class_address": "0x7429ac",
+          "raw": "75210000007429ac00000000"
+        },
+        {
+          "entry_address": "0x742a8c",
+          "id_byte1": "75",
+          "flags_byte": "01",
+          "class_address": "0x7429ac",
+          "raw": "75010000007429ac01000000"
+        },
+        {
+          "entry_address": "0x742a98",
+          "id_byte1": "55",
+          "flags_byte": "32",
+          "class_address": "0x7429ac",
+          "raw": "55320000007429ac00000000"
+        },
+        {
+          "entry_address": "0x742aa4",
+          "id_byte1": "55",
+          "flags_byte": "02",
+          "class_address": "0x7429ac",
+          "raw": "55020000007429ac01000000"
+        },
+        {
+          "entry_address": "0x742ab0",
+          "id_byte1": "76",
+          "flags_byte": "21",
+          "class_address": "0x7429c0",
+          "raw": "76210000007429c000000000"
+        },
+        {
+          "entry_address": "0x742abc",
+          "id_byte1": "76",
+          "flags_byte": "01",
+          "class_address": "0x7429c0",
+          "raw": "76010000007429c001000000"
+        },
+        {
+          "entry_address": "0x742ac8",
+          "id_byte1": "56",
+          "flags_byte": "32",
+          "class_address": "0x7429c0",
+          "raw": "56320000007429c000000000"
+        },
+        {
+          "entry_address": "0x742ad4",
+          "id_byte1": "56",
+          "flags_byte": "02",
+          "class_address": "0x7429c0",
+          "raw": "56020000007429c001000000"
+        },
+        {
+          "entry_address": "0x742ae0",
+          "id_byte1": "81",
+          "flags_byte": "31",
+          "class_address": "0x7429d4",
+          "raw": "81310000007429d400000000"
+        },
+        {
+          "entry_address": "0x742aec",
+          "id_byte1": "81",
+          "flags_byte": "01",
+          "class_address": "0x7429d4",
+          "raw": "81010000007429d401000000"
+        },
+        {
+          "entry_address": "0x742af8",
+          "id_byte1": "91",
+          "flags_byte": "32",
+          "class_address": "0x7429d4",
+          "raw": "91320000007429d400000000"
+        },
+        {
+          "entry_address": "0x742b04",
+          "id_byte1": "91",
+          "flags_byte": "02",
+          "class_address": "0x7429d4",
+          "raw": "91020000007429d401000000"
+        },
+        {
+          "entry_address": "0x742b10",
+          "id_byte1": "a1",
+          "flags_byte": "31",
+          "class_address": "0x74260c",
+          "raw": "a13100000074260c00000000"
+        },
+        {
+          "entry_address": "0x742b1c",
+          "id_byte1": "a1",
+          "flags_byte": "01",
+          "class_address": "0x74260c",
+          "raw": "a10100000074260c01000000"
+        },
+        {
+          "entry_address": "0x742b28",
+          "id_byte1": "b1",
+          "flags_byte": "32",
+          "class_address": "0x74260c",
+          "raw": "b13200000074260c00000000"
+        },
+        {
+          "entry_address": "0x742b34",
+          "id_byte1": "b1",
+          "flags_byte": "02",
+          "class_address": "0x74260c",
+          "raw": "b10200000074260c01000000"
+        },
+        {
+          "entry_address": "0x742b40",
+          "id_byte1": "f1",
+          "flags_byte": "31",
+          "class_address": "0x7429fc",
+          "raw": "f1310000007429fc00000000"
+        },
+        {
+          "entry_address": "0x742b4c",
+          "id_byte1": "f1",
+          "flags_byte": "01",
+          "class_address": "0x7429fc",
+          "raw": "f1010000007429fc01000000"
+        },
+        {
+          "entry_address": "0x742b58",
+          "id_byte1": "c1",
+          "flags_byte": "32",
+          "class_address": "0x7429fc",
+          "raw": "c1320000007429fc00000000"
+        },
+        {
+          "entry_address": "0x742b64",
+          "id_byte1": "c1",
+          "flags_byte": "02",
+          "class_address": "0x7429fc",
+          "raw": "c1020000007429fc01000000"
+        },
+        {
+          "entry_address": "0x742b70",
+          "id_byte1": "da",
+          "flags_byte": "31",
+          "class_address": "0x742a10",
+          "raw": "da31000000742a1000000000"
+        },
+        {
+          "entry_address": "0x742b7c",
+          "id_byte1": "da",
+          "flags_byte": "01",
+          "class_address": "0x742a10",
+          "raw": "da01000000742a1001000000"
+        },
+        {
+          "entry_address": "0x742b88",
+          "id_byte1": "ca",
+          "flags_byte": "32",
+          "class_address": "0x742a10",
+          "raw": "ca32000000742a1000000000"
+        },
+        {
+          "entry_address": "0x742b94",
+          "id_byte1": "ca",
+          "flags_byte": "02",
+          "class_address": "0x742a10",
+          "raw": "ca02000000742a1001000000"
+        },
+        {
+          "entry_address": "0x742ba0",
+          "id_byte1": "dc",
+          "flags_byte": "31",
+          "class_address": "0x742a24",
+          "raw": "dc31000000742a2400000000"
+        },
+        {
+          "entry_address": "0x742bac",
+          "id_byte1": "dc",
+          "flags_byte": "01",
+          "class_address": "0x742a24",
+          "raw": "dc01000000742a2401000000"
+        },
+        {
+          "entry_address": "0x742bb8",
+          "id_byte1": "cc",
+          "flags_byte": "32",
+          "class_address": "0x742a24",
+          "raw": "cc32000000742a2400000000"
+        },
+        {
+          "entry_address": "0x742bc4",
+          "id_byte1": "cc",
+          "flags_byte": "02",
+          "class_address": "0x742a24",
+          "raw": "cc02000000742a2401000000"
+        },
+        {
+          "entry_address": "0x742bd0",
+          "id_byte1": "aa",
+          "flags_byte": "31",
+          "class_address": "0x7429e8",
+          "raw": "aa310000007429e800000000"
+        },
+        {
+          "entry_address": "0x742bdc",
+          "id_byte1": "aa",
+          "flags_byte": "01",
+          "class_address": "0x7429e8",
+          "raw": "aa010000007429e801000000"
+        },
+        {
+          "entry_address": "0x742be8",
+          "id_byte1": "ba",
+          "flags_byte": "32",
+          "class_address": "0x7429e8",
+          "raw": "ba320000007429e800000000"
+        },
+        {
+          "entry_address": "0x742bf4",
+          "id_byte1": "ba",
+          "flags_byte": "02",
+          "class_address": "0x7429e8",
+          "raw": "ba020000007429e801000000"
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "20",
+      "conventional_name": "ST",
+      "decoder_address": "0x5c4b78",
+      "table_address": "0x7426e4",
+      "entries": [
+        {
+          "entry_address": "0x7426e4",
+          "id_byte1": "33",
+          "flags_byte": "21",
+          "class_address": "0x742558",
+          "raw": "33210000007425580000ff00"
+        },
+        {
+          "entry_address": "0x7426f0",
+          "id_byte1": "35",
+          "flags_byte": "21",
+          "class_address": "0x74256c",
+          "raw": "352100000074256c0000ff00"
+        },
+        {
+          "entry_address": "0x7426fc",
+          "id_byte1": "36",
+          "flags_byte": "21",
+          "class_address": "0x742580",
+          "raw": "36210000007425800000ff00"
+        },
+        {
+          "entry_address": "0x742708",
+          "id_byte1": "39",
+          "flags_byte": "21",
+          "class_address": "0x742594",
+          "raw": "39210000007425940000ff00"
+        },
+        {
+          "entry_address": "0x742714",
+          "id_byte1": "43",
+          "flags_byte": "32",
+          "class_address": "0x742558",
+          "raw": "43320000007425580000ff00"
+        },
+        {
+          "entry_address": "0x742720",
+          "id_byte1": "45",
+          "flags_byte": "32",
+          "class_address": "0x74256c",
+          "raw": "453200000074256c0000ff00"
+        },
+        {
+          "entry_address": "0x74272c",
+          "id_byte1": "46",
+          "flags_byte": "32",
+          "class_address": "0x742580",
+          "raw": "46320000007425800000ff00"
+        },
+        {
+          "entry_address": "0x742738",
+          "id_byte1": "49",
+          "flags_byte": "32",
+          "class_address": "0x742594",
+          "raw": "49320000007425940000ff00"
+        },
+        {
+          "entry_address": "0x742744",
+          "id_byte1": "73",
+          "flags_byte": "21",
+          "class_address": "0x742558",
+          "raw": "73210000007425580000ff00"
+        },
+        {
+          "entry_address": "0x742750",
+          "id_byte1": "75",
+          "flags_byte": "21",
+          "class_address": "0x74256c",
+          "raw": "752100000074256c0000ff00"
+        },
+        {
+          "entry_address": "0x74275c",
+          "id_byte1": "76",
+          "flags_byte": "21",
+          "class_address": "0x742580",
+          "raw": "76210000007425800000ff00"
+        },
+        {
+          "entry_address": "0x742768",
+          "id_byte1": "79",
+          "flags_byte": "21",
+          "class_address": "0x742594",
+          "raw": "79210000007425940000ff00"
+        },
+        {
+          "entry_address": "0x742774",
+          "id_byte1": "53",
+          "flags_byte": "32",
+          "class_address": "0x742558",
+          "raw": "53320000007425580000ff00"
+        },
+        {
+          "entry_address": "0x742780",
+          "id_byte1": "55",
+          "flags_byte": "32",
+          "class_address": "0x74256c",
+          "raw": "553200000074256c0000ff00"
+        },
+        {
+          "entry_address": "0x74278c",
+          "id_byte1": "56",
+          "flags_byte": "32",
+          "class_address": "0x742580",
+          "raw": "56320000007425800000ff00"
+        },
+        {
+          "entry_address": "0x742798",
+          "id_byte1": "59",
+          "flags_byte": "32",
+          "class_address": "0x742594",
+          "raw": "59320000007425940000ff00"
+        },
+        {
+          "entry_address": "0x7427a4",
+          "id_byte1": "a2",
+          "flags_byte": "31",
+          "class_address": "0x7425a8",
+          "raw": "a2310000007425a80000ff00"
+        },
+        {
+          "entry_address": "0x7427b0",
+          "id_byte1": "a1",
+          "flags_byte": "31",
+          "class_address": "0x742694",
+          "raw": "a1310000007426940000ff00"
+        },
+        {
+          "entry_address": "0x7427bc",
+          "id_byte1": "aa",
+          "flags_byte": "31",
+          "class_address": "0x7425d0",
+          "raw": "aa310000007425d00000ff00"
+        },
+        {
+          "entry_address": "0x7427c8",
+          "id_byte1": "ac",
+          "flags_byte": "31",
+          "class_address": "0x7425e4",
+          "raw": "ac310000007425e40000ff00"
+        },
+        {
+          "entry_address": "0x7427d4",
+          "id_byte1": "a3",
+          "flags_byte": "31",
+          "class_address": "0x7425f8",
+          "raw": "a3310000007425f80000ff00"
+        },
+        {
+          "entry_address": "0x7427e0",
+          "id_byte1": "b2",
+          "flags_byte": "32",
+          "class_address": "0x7425a8",
+          "raw": "b2320000007425a80000ff00"
+        },
+        {
+          "entry_address": "0x7427ec",
+          "id_byte1": "b1",
+          "flags_byte": "32",
+          "class_address": "0x742694",
+          "raw": "b1320000007426940000ff00"
+        },
+        {
+          "entry_address": "0x7427f8",
+          "id_byte1": "ba",
+          "flags_byte": "32",
+          "class_address": "0x7425d0",
+          "raw": "ba320000007425d00000ff00"
+        },
+        {
+          "entry_address": "0x742804",
+          "id_byte1": "bc",
+          "flags_byte": "32",
+          "class_address": "0x7425e4",
+          "raw": "bc320000007425e40000ff00"
+        },
+        {
+          "entry_address": "0x742810",
+          "id_byte1": "b3",
+          "flags_byte": "32",
+          "class_address": "0x7425f8",
+          "raw": "b3320000007425f80000ff00"
+        },
+        {
+          "entry_address": "0x74281c",
+          "id_byte1": "f2",
+          "flags_byte": "31",
+          "class_address": "0x7425a8",
+          "raw": "f2310000007425a80000ff00"
+        },
+        {
+          "entry_address": "0x742828",
+          "id_byte1": "f1",
+          "flags_byte": "31",
+          "class_address": "0x742694",
+          "raw": "f1310000007426940000ff00"
+        },
+        {
+          "entry_address": "0x742834",
+          "id_byte1": "da",
+          "flags_byte": "31",
+          "class_address": "0x7425d0",
+          "raw": "da310000007425d00000ff00"
+        },
+        {
+          "entry_address": "0x742840",
+          "id_byte1": "dc",
+          "flags_byte": "31",
+          "class_address": "0x7426bc",
+          "raw": "dc310000007426bc00018000"
+        },
+        {
+          "entry_address": "0x74284c",
+          "id_byte1": "dc",
+          "flags_byte": "31",
+          "class_address": "0x7426a8",
+          "raw": "dc310000007426a800018400"
+        },
+        {
+          "entry_address": "0x742858",
+          "id_byte1": "d3",
+          "flags_byte": "31",
+          "class_address": "0x7426d0",
+          "raw": "d3310000007426d00000ff00"
+        },
+        {
+          "entry_address": "0x742864",
+          "id_byte1": "c2",
+          "flags_byte": "32",
+          "class_address": "0x7425a8",
+          "raw": "c2320000007425a80000ff00"
+        },
+        {
+          "entry_address": "0x742870",
+          "id_byte1": "c1",
+          "flags_byte": "32",
+          "class_address": "0x742694",
+          "raw": "c1320000007426940000ff00"
+        },
+        {
+          "entry_address": "0x74287c",
+          "id_byte1": "ca",
+          "flags_byte": "32",
+          "class_address": "0x7425d0",
+          "raw": "ca320000007425d00000ff00"
+        },
+        {
+          "entry_address": "0x742888",
+          "id_byte1": "cc",
+          "flags_byte": "32",
+          "class_address": "0x7425e4",
+          "raw": "cc320000007425e40000ff00"
+        },
+        {
+          "entry_address": "0x742894",
+          "id_byte1": "c3",
+          "flags_byte": "32",
+          "class_address": "0x7425f8",
+          "raw": "c3320000007425f80000ff00"
+        }
+      ]
+    },
+    {
+      "manufacturer_id": "98",
+      "conventional_name": "Toshiba",
+      "decoder_address": "0x5c4d18",
+      "table_address": "0x742cfc",
+      "entries": [
+        {
+          "entry_address": "0x742cfc",
+          "id_byte1": "e5",
+          "flags_byte": "11",
+          "class_address": "0x742530",
+          "raw": "e511000000742530"
+        },
+        {
+          "entry_address": "0x742d04",
+          "id_byte1": "e6",
+          "flags_byte": "11",
+          "class_address": "0x742544",
+          "raw": "e611000000742544"
+        },
+        {
+          "entry_address": "0x742d0c",
+          "id_byte1": "73",
+          "flags_byte": "11",
+          "class_address": "0x742558",
+          "raw": "7311000000742558"
+        },
+        {
+          "entry_address": "0x742d14",
+          "id_byte1": "75",
+          "flags_byte": "11",
+          "class_address": "0x74256c",
+          "raw": "751100000074256c"
+        },
+        {
+          "entry_address": "0x742d1c",
+          "id_byte1": "76",
+          "flags_byte": "11",
+          "class_address": "0x742580",
+          "raw": "7611000000742580"
+        },
+        {
+          "entry_address": "0x742d24",
+          "id_byte1": "79",
+          "flags_byte": "11",
+          "class_address": "0x742594",
+          "raw": "7911000000742594"
+        },
+        {
+          "entry_address": "0x742d2c",
+          "id_byte1": "f1",
+          "flags_byte": "31",
+          "class_address": "0x7425bc",
+          "raw": "f1310000007425bc"
+        },
+        {
+          "entry_address": "0x742d34",
+          "id_byte1": "da",
+          "flags_byte": "31",
+          "class_address": "0x7425d0",
+          "raw": "da310000007425d0"
+        }
+      ]
+    }
+  ],
+  "virtual_candidates": [
+    {
+      "manufacturer_id": "ec",
+      "device_id": "da",
+      "id_bytes_hex": "ecda10954400",
+      "id_status": "Explicit virtual-chip assumption. Kernel constrains only first two bytes for Samsung. Not read from physical SMEG.",
+      "entry_address": "0x742980",
+      "entry_raw": "da31000000742620",
+      "class_address": "0x742620",
+      "class_raw": "080000400b100b1c000008000002000060000000",
+      "page_data_bytes": 2048,
+      "page_oob_bytes": 64,
+      "blocks": 2048,
+      "erase_block_bytes": 131072,
+      "pages_per_block": 64,
+      "capacity_bytes": 268435456,
+      "capacity_mib": 256
+    },
+    {
+      "manufacturer_id": "ec",
+      "device_id": "dc",
+      "id_bytes_hex": "ecdc10955400",
+      "id_status": "Explicit virtual-chip assumption. Kernel constrains only first two bytes for Samsung. Not read from physical SMEG.",
+      "entry_address": "0x742988",
+      "entry_raw": "dc31000000742634",
+      "class_address": "0x742634",
+      "class_raw": "080000400b100b1d000010000002000060000000",
+      "page_data_bytes": 2048,
+      "page_oob_bytes": 64,
+      "blocks": 4096,
+      "erase_block_bytes": 131072,
+      "pages_per_block": 64,
+      "capacity_bytes": 536870912,
+      "capacity_mib": 512
+    },
+    {
+      "manufacturer_id": "ec",
+      "device_id": "d3",
+      "id_bytes_hex": "ecd351955800",
+      "id_status": "Explicit virtual-chip assumption. Kernel constrains only first two bytes for Samsung. Not read from physical SMEG.",
+      "entry_address": "0x742990",
+      "entry_raw": "d331000000742648",
+      "class_address": "0x742648",
+      "class_raw": "080000400b100b1e000020000002000060000000",
+      "page_data_bytes": 2048,
+      "page_oob_bytes": 64,
+      "blocks": 8192,
+      "erase_block_bytes": 131072,
+      "pages_per_block": 64,
+      "capacity_bytes": 1073741824,
+      "capacity_mib": 1024
+    }
+  ],
+  "recommended_choice": {
+    "manufacturer_id": "ec",
+    "device_id": "dc",
+    "id_bytes_hex": "ecdc10955400",
+    "id_status": "Explicit virtual-chip assumption. Kernel constrains only first two bytes for Samsung. Not read from physical SMEG.",
+    "entry_address": "0x742988",
+    "entry_raw": "dc31000000742634",
+    "class_address": "0x742634",
+    "class_raw": "080000400b100b1d000010000002000060000000",
+    "page_data_bytes": 2048,
+    "page_oob_bytes": 64,
+    "blocks": 4096,
+    "erase_block_bytes": 131072,
+    "pages_per_block": 64,
+    "capacity_bytes": 536870912,
+    "capacity_mib": 512
+  },
+  "recommendation_reason": "Device configuration maxarray0x80000KB=512MiB and reserved-bottom0x2cd00KB favour matching512MiB virtual geometry; sizing metadata reported by Beta/main.",
+  "id_readback_evidence": {
+    "operation_function": "0x5bce60",
+    "caller": "0x5bded0",
+    "opcode_at_0x5be220": "NFC_CONFIG2 operation0x10",
+    "requested_length_at_0x5be218": 4,
+    "copy_range": [
+      "0x5bcf58",
+      "0x5bcfdc"
+    ],
+    "observed_copy": "ReadBEhalfword buffer+0 -> ID[0],ID[1]; buffer+2 -> ID[2],ID[3]. Buffer+4 temporary is overwritten. No byte swap of the first four ID bytes.",
+    "diagnostic_caveat": "Failureprintf reads6 ID bytes, but helper shown only populates4. Last2 logbytes do not establish hardwareID."
+  },
+  "nfc_irq": {
+    "source_vector": 6,
+    "ipic_pending": "IMMR+0xc08 SIPNR_H",
+    "ipic_mask": "IMMR+0xc20 SIMSR_H",
+    "mask_hex": "0x00000400",
+    "sources": [
+      "https://raw.githubusercontent.com/torvalds/linux/v6.1/arch/powerpc/boot/dts/mpc5121.dtsi",
+      "https://www.nxp.com/docs/en/reference-manual/MPC5121ERM.pdf"
+    ],
+    "manual_evidence": "Table20-2 source6 NFC; Fig20-4 NFC at architecturalbit21/conventionalbit10."
+  },
+  "external_id_crosscheck": {
+    "url": "https://lkml.indiana.edu/hypermail/linux/kernel/1210.1/01292.html",
+    "kind": "Original Linux developer patch report, archived",
+    "observation": "Samsung K9F2G08U0B READID ecda10954400ecda; supports256MiB candidate ID plausibility only, not installed SMEG identity."
+  }
+}

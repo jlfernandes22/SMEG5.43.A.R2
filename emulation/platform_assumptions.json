@@ -1,0 +1,228 @@
+{
+  "scope": "Public MPC5121E/ADS defaults adopted as explicit emulator assumptions; these are not SMEG board measurements.",
+  "sources": [
+    {
+      "id": "ads",
+      "url": "https://raw.githubusercontent.com/u-boot/u-boot/v2010.12/include/configs/mpc5121ads.h",
+      "sha256": "7e89bccee73ac8da179c174ad1f219ada2413f0bb052abb61b46d326006f4e18"
+    },
+    {
+      "id": "map",
+      "url": "https://raw.githubusercontent.com/u-boot/u-boot/v2010.12/arch/powerpc/include/asm/immap_512x.h",
+      "sha256": "bd4b8e1256d6f49367a1f4b1b5b02d98e86f285328fb63ff59e5bea97e537259"
+    },
+    {
+      "id": "uart",
+      "url": "https://raw.githubusercontent.com/u-boot/u-boot/v2010.12/arch/powerpc/cpu/mpc512x/serial.c",
+      "sha256": "03474b92dab88af63f1efe117bd115730c02e4dd35afd705cf62f35a2d40c6fc"
+    },
+    {
+      "id": "nand",
+      "url": "https://raw.githubusercontent.com/u-boot/u-boot/v2010.12/drivers/mtd/nand/mpc5121_nfc.c",
+      "sha256": "e4b5022256c394304101ae865ec9cd323a7fd15f70f3c4a323f44b5eeb69f2e0"
+    },
+    {
+      "id": "nxp_nand",
+      "url": "https://www.nxp.com/docs/en/application-note/AN3845.pdf",
+      "sections": [
+        "2",
+        "3.1",
+        "3.3",
+        "4.1",
+        "5"
+      ]
+    },
+    {
+      "id": "nxp_rm",
+      "url": "https://www.nxp.com/docs/en/reference-manual/MPC5121ERM.pdf",
+      "sections": [
+        "2",
+        "4",
+        "26",
+        "30",
+        "31"
+      ],
+      "access_note": "Search-index excerpt read; full PDF web parser rejected size. Register offsets cross-checked against primary U-Boot header."
+    }
+  ],
+  "assumed_platform": {
+    "cpu": "one e300-family PowerPC CPU; any AXE accelerator is not a second emulated PPC CPU",
+    "byte_order": "big-endian",
+    "cpu_clock_hz": 400000000,
+    "cpu_clock_status": "working assumption; not measured from unit",
+    "ram_base": "0x00000000",
+    "ram_default_bytes": 268435456,
+    "ram_reference_alternative_bytes": 536870912,
+    "ram_source": "ads:85-90",
+    "sram_base": "0x30000000",
+    "sram_bytes": 131072,
+    "immr_reset_base": "0xff400000",
+    "immr_run_base": "0x80000000",
+    "immr_register_window_bytes": 1048576,
+    "immr_size_note": "Struct immap_t and NXP LAW0 specify 1 MiB; ADS introductory comment says 4 MiB and is not used as implemented register coverage.",
+    "nor_reference_base": "0xfc000000",
+    "nor_reference_bytes": 67108864,
+    "nand_controller_base": "0x40000000",
+    "nand_window_bytes": 1048576,
+    "nand_geometry_assumption": {
+      "source": "nxp_nand section 2; ADS512101 reference board only",
+      "capacity_bytes": 1073741824,
+      "bus_width_bits": 8,
+      "page_data_bytes": 2048,
+      "page_spare_bytes": 64,
+      "pages_per_block": 64,
+      "pages_per_block_status": "initial working assumption; 64 is supported in NFC_CONFIG1; not established for SMEG chip"
+    },
+    "console_port_reference": 3,
+    "console_port_status": "ADS U-Boot uses PSC3; NXP application note calls physical connector UART0. SMEG console port unknown.",
+    "console_reference_baud": 115200,
+    "reset_vector_options": [
+      "0x00000000",
+      "0xfff00000"
+    ],
+    "reset_vector_status": "NXP BMS-selected initial fetch base. PowerPC exception/reset vector offsets and complete boot mapping must be modelled separately."
+  },
+  "immr_offsets": {
+    "IMMRBAR": "0x0000",
+    "DDR_LAWBAR": "0x00a0",
+    "DDR_LAWAR": "0x00a4",
+    "MBXBAR": "0x00c0",
+    "SRAMBAR": "0x00c4",
+    "NFCBAR": "0x00c8",
+    "SPRIDR": "0x0100",
+    "WDT": "0x0900",
+    "IPIC": "0x0c00",
+    "RESET": "0x0e00",
+    "CLOCK": "0x0f00",
+    "SCCR1": "0x0f04",
+    "DDR_CONTROLLER": "0x9000",
+    "IO_CONTROL": "0xa000",
+    "PSC0": "0x11000",
+    "PSC_STRIDE": "0x100",
+    "PSC_COUNT": 12,
+    "FIFOC": "0x11f00",
+    "source": "map; offsetof(immap_t) checked with fixed-width host types"
+  },
+  "psc_registers": {
+    "mode": {
+      "offset": "0x00",
+      "width": 1
+    },
+    "status_read_clock_select_write": {
+      "offset": "0x04",
+      "width": 2,
+      "TX_EMPTY_MASK": "0x0800"
+    },
+    "command": {
+      "offset": "0x08",
+      "width": 1,
+      "RX_ENABLE": "0x01",
+      "RX_DISABLE": "0x02",
+      "TX_ENABLE": "0x04",
+      "TX_DISABLE": "0x08",
+      "RESET_RX": "0x20",
+      "RESET_TX": "0x30"
+    },
+    "buffer": {
+      "offset": "0x0c",
+      "widths": [
+        1,
+        2,
+        4
+      ]
+    },
+    "isr_read_imr_write": {
+      "offset": "0x14",
+      "width": 2
+    },
+    "ctur": {
+      "offset": "0x18",
+      "width": 1
+    },
+    "ctlr": {
+      "offset": "0x1c",
+      "width": 1
+    },
+    "sicr": {
+      "offset": "0x40",
+      "width": 4
+    },
+    "tx_fifo_command": {
+      "offset": "0x80",
+      "width": 4
+    },
+    "tx_fifo_status": {
+      "offset": "0x88",
+      "width": 4
+    },
+    "tx_fifo_data": {
+      "offset": "0xbc",
+      "widths": [
+        1,
+        2,
+        4
+      ]
+    },
+    "rx_fifo_command": {
+      "offset": "0xc0",
+      "width": 4
+    },
+    "rx_fifo_status": {
+      "offset": "0xc8",
+      "width": 4,
+      "EMPTY_MASK": "0x01"
+    },
+    "rx_fifo_data": {
+      "offset": "0xfc",
+      "widths": [
+        1,
+        2,
+        4
+      ]
+    },
+    "source": "map:965-1080; uart:221-254"
+  },
+  "nfc_register_offsets": {
+    "MAIN_BUFFER_N": "n*0x200",
+    "SPARE_BUFFER_N": "0x1000+n*0x40",
+    "BUF_ADDR": "0x1e04",
+    "FLASH_ADDR": "0x1e06",
+    "FLASH_CMD": "0x1e08",
+    "CONFIG": "0x1e0a",
+    "ECC_STATUS1": "0x1e0c",
+    "ECC_STATUS2": "0x1e0e",
+    "SPAS": "0x1e10",
+    "WRPROT": "0x1e12",
+    "CONFIG1": "0x1e1a",
+    "CONFIG2": "0x1e1c",
+    "CONFIG2_DONE_INTERRUPT_MASK": "0x8000",
+    "register_width_bytes": 2,
+    "source": "nand:46-107"
+  },
+  "boot_reference": {
+    "source": "nxp_nand sections 3 and 4.1",
+    "sequence": [
+      "NFC loads first NAND page into controller SRAM according to reset straps.",
+      "SPL configures IMMR and clocks, NAND parameters and DRAM.",
+      "SPL copies remaining bootloader into DRAM, then jumps absolutely."
+    ],
+    "reference_first_stage_bytes": 2048,
+    "reference_second_stage_nand_offset": "0x800",
+    "status": "ADS reference sequence; do not claim supplied update contains reset-stage SMEG NAND bootloader."
+  },
+  "model_contract": {
+    "uart_polling_shim": "TX_EMPTY and RX_EMPTY may reflect the implemented empty/idle backend state; command enable/reset behavior remains explicit.",
+    "interrupts": "IPIC delivery not implemented unless actual pending/masking/priority/vector behavior exists.",
+    "unimplemented_mmio": "Log accesses; do not return invented ready/status IDs.",
+    "nand": "A raw drive attachment alone does not implement NFC commands, ECC, OOB, interrupts or first-page boot.",
+    "unknowns": [
+      "SMEG board reset straps",
+      "unit NAND ID and geometry",
+      "installed flash partition table",
+      "actual RAM configuration",
+      "bootloader addresses",
+      "actual PSC console channel",
+      "AXE firmware runtime coupling"
+    ]
+  }
+}

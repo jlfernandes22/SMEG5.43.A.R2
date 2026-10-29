@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "note": "Checked upstream revisions. Checkouts, firmware and build outputs are not distributed. Research references are not all required for the minimal QEMU build.",
+  "sources": {
+    "qemu": {
+      "url": "https://github.com/qemu/qemu.git",
+      "tag": "v9.2.0",
+      "commit": "ae35f033b874c627d81d51070187fbf55f0bf1a7"
+    },
+    "rea": {
+      "url": "https://github.com/morluto/rea",
+      "commit": "bc143125edd223b7e0d315d5ea7efdc270c29f9e"
+    },
+    "psa-smeg-revers": {
+      "url": "https://github.com/pepelxl/psa-smeg-revers.git",
+      "commit": "932db83c6e1518f5b9ddf3050670ab218329ec68"
+    },
+    "smeg-plus-patches": {
+      "url": "https://github.com/KRoperUK/smeg-plus-patches.git",
+      "commit": "c5eda38e6b5520015bbbd59bde8caf97c2e4fb7c"
+    },
+    "powervr-native-sdk": {
+      "url": "https://github.com/powervr-graphics/Native_SDK.git",
+      "commit": "63f0098acdc11ec9a072c30000d2fa670a955bee",
+      "vendored_subset": "emulation/powervr/",
+      "license": "MIT"
+    },
+    "u-boot-reference": {
+      "url": "https://github.com/u-boot/u-boot.git",
+      "tag": "v2010.12",
+      "reference_file": "drivers/mtd/nand/mpc5121_nfc.c",
+      "sha256": "e4b5022256c394304101ae865ec9cd323a7fd15f70f3c4a323f44b5eeb69f2e0",
+      "compiled_into_emulator": false
+    }
+  }
+}

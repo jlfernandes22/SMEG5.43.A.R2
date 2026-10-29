@@ -1,0 +1,35 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Combustivel</title>
+<style type="text/css">
+body{margin:0;background:#101923;color:#eff5fa;font:20px Arial,sans-serif}
+#app{margin:48px 84px 0;width:632px}h1{font-size:27px;font-weight:normal;margin:0 0 3px}
+.sub{font-size:13px;color:#afc1d2;height:19px}button{font:20px Arial;color:#fff;border:1px solid #557b93;background:#243d50;padding:8px 12px}
+.tab{width:310px;height:43px;margin:4px 0 7px}.active{background:#126982;border-color:#7bd9ec}
+#list{height:226px}.station{height:43px;width:630px;text-align:left;margin-bottom:2px;padding:3px 10px;font-size:17px;overflow:hidden}
+.price{float:right;font-size:24px;color:#89e0eb}.detail{display:block;font-size:12px;color:#b8cbdc}
+#estimate{height:53px;padding-top:5px;border-top:1px solid #557b93;clear:both}.small{width:47px;padding:7px 4px}
+#cost{float:right;color:#89e0eb;font-size:24px;margin-top:7px}.source{font-size:11px;color:#afc1d2;margin-top:3px}
+</style></head><body><div id="app"><h1>Combustivel <span style="font-size:17px;color:#8ccfdb">/ distrito de Lisboa</span></h1>
+<div class="sub" id="retrieved">Copia offline / sem Internet no SMEG</div>
+<button id="diesel" class="tab active" onclick="switchFuel(0)">Gasoleo simples</button>
+<button id="petrol" class="tab" onclick="switchFuel(1)">Gasolina simples 95</button>
+<div id="list"></div><div id="estimate">Litros <button class="small" onclick="litres(-5)">-</button>
+<span id="litres">40</span> <button class="small" onclick="litres(5)">+</button><span id="cost">Escolha um posto</span></div>
+<div class="source">Fonte: DGEG / precoscombustiveis.dgeg.gov.pt / preco e atualizacao indicados por posto.</div>
+<div class="source">Amostra de 5 postos por combustivel, ordenada por preco. Nao usa GPS nem controla o carro.</div>
+</div><script type="text/javascript">
+/* ES3 only. No network, eval, native vehicle setters or dependencies. */
+var snapshot=__FUEL_SNAPSHOT__,selected=null,amount=40,fuel=0;
+function el(id){return document.getElementById(id);}
+function text(node,s){while(node.firstChild)node.removeChild(node.firstChild);node.appendChild(document.createTextNode(String(s)));}
+function cost(){text(el('litres'),amount);text(el('cost'),selected===null?'Escolha um posto':'Total: EUR '+(Math.round(amount*selected/10)/100).toFixed(2));}
+function litres(delta){amount=Math.max(5,Math.min(100,amount+delta));cost();}
+function choose(index){var s=snapshot.fuels[fuel].stations[index];selected=Math.round(1000*Number(s.Preco.replace(',','.').replace(/[^0-9.]/g,'')));cost();}
+function switchFuel(which){fuel=which;selected=null;cost();el('diesel').className='tab'+(which===0?' active':'');el('petrol').className='tab'+(which===1?' active':'');
+var list=el('list');while(list.firstChild)list.removeChild(list.firstChild);var i,s,b,p,d;
+for(i=0;i<snapshot.fuels[which].stations.length;i++){s=snapshot.fuels[which].stations[i];b=document.createElement('button');b.className='station';
+p=document.createElement('span');p.className='price';text(p,s.Preco+'/L');b.appendChild(p);b.appendChild(document.createTextNode(s.Nome));
+d=document.createElement('span');d.className='detail';text(d,s.Municipio+' / atualizado '+s.DataAtualizacao);b.appendChild(d);
+b.onclick=(function(n){return function(){choose(n);};})(i);list.appendChild(b);}
+text(el('retrieved'),'Copia offline obtida em '+snapshot.fetched_utc.substr(0,16).replace('T',' ')+' UTC / atualizar no laptop');}
+switchFuel(0);
+</script></body></html>

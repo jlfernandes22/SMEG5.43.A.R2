@@ -1,0 +1,25 @@
+{
+  "repository": "powervr-graphics/Native_SDK",
+  "commit": "63f0098acdc11ec9a072c30000d2fa670a955bee",
+  "license": "MIT",
+  "files": [
+    {
+      "local": "PVRTDecompress.cpp",
+      "url": "https://raw.githubusercontent.com/powervr-graphics/Native_SDK/63f0098acdc11ec9a072c30000d2fa670a955bee/framework/PVRCore/texture/PVRTDecompress.cpp",
+      "bytes": 27301,
+      "sha256": "74559c5a4b8161aafce1ebe984bf8060896feaa81276b614491dbee755d6e4c7"
+    },
+    {
+      "local": "PVRTDecompress.h",
+      "url": "https://raw.githubusercontent.com/powervr-graphics/Native_SDK/63f0098acdc11ec9a072c30000d2fa670a955bee/framework/PVRCore/texture/PVRTDecompress.h",
+      "bytes": 1461,
+      "sha256": "67123a36b99df380af76a65f3dfa3a7f368a153f5401b36a9ff1ed233cee6f5f"
+    },
+    {
+      "local": "LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/powervr-graphics/Native_SDK/63f0098acdc11ec9a072c30000d2fa670a955bee/LICENSE.md",
+      "bytes": 1093,
+      "sha256": "b1aea79afab593649ede742eccbb7feb74d216d52d120b99c4d349133871ba9f"
+    }
+  ]
+}

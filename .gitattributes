@@ -1,0 +1,6 @@
+*.png -text
+*.jpg -text
+# Preserve vendored upstream bytes and license provenance.
+emulation/powervr/PVRTDecompress.cpp -text
+emulation/powervr/PVRTDecompress.h -text
+emulation/powervr/LICENSE.txt -text -whitespace

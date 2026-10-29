@@ -1,0 +1,46 @@
+{
+  "reference": "reference_nfc.c",
+  "source_url": "https://raw.githubusercontent.com/u-boot/u-boot/v2010.12/drivers/mtd/nand/mpc5121_nfc.c",
+  "source_sha256": "e4b5022256c394304101ae865ec9cd323a7fd15f70f3c4a323f44b5eeb69f2e0",
+  "reference_only": true,
+  "not_in_emulator_build": true,
+  "nand_constants_source_url": "https://raw.githubusercontent.com/u-boot/u-boot/v2010.12/include/linux/mtd/nand.h",
+  "nand_constants_source_sha256": "450484353f678d1259dbb6da136d2f7cd1da8f10a0af3f4da9cef9ca8e92d92a",
+  "controller_base_assumption": "0x40000000",
+  "register_access": "16-bit big-endian",
+  "nfc_config2_operations": {
+    "command": "0x0001",
+    "address": "0x0002",
+    "program_buffer_to_nand": "0x0004",
+    "read_nand_to_buffer": "0x0008",
+    "read_id": "0x0010",
+    "read_status": "0x0020",
+    "completion_interrupt": "0x8000"
+  },
+  "nfc_config1": {
+    "controller_reset_self_clear": "0x0040",
+    "interrupt_mask": "0x0010",
+    "big_endian_transfer": "0x0020",
+    "ecc_enable": "0x0008"
+  },
+  "nand_commands": {
+    "read0": "0x00",
+    "readstart": "0x30",
+    "status": "0x70",
+    "readid": "0x90",
+    "reset": "0xff"
+  },
+  "nand_status": {
+    "fail": "0x01",
+    "true_ready": "0x20",
+    "ready": "0x40",
+    "write_unprotected": "0x80"
+  },
+  "buffer_semantics": {
+    "main": "8 x 512-byte buffers from offset0",
+    "spare": "8 x64-byte slots from0x1000",
+    "readid": "ID returned in main area0; driver reads bytes via same read_buf path",
+    "status": "status returned in main area0; x8 column0, x16 column1"
+  },
+  "absent_device_note": "ReadID all0xff can model an unattached chip only when explicitly labelled absent. An erased array does not erase silicon ID. Command completion is controller completion, not proof a valid chip exists. A synthetic geometry/ID requires explicit platform assumption."
+}

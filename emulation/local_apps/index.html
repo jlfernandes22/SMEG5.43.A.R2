@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=800, initial-scale=1">
+<title>Local Apps</title>
+<style type="text/css">
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+body { margin: 0; background: #0d151f; color: #f2f6fa; font-family: Arial, sans-serif; }
+#page { width: 640px; margin: 0 auto; padding-top: 60px; }
+h1 { font-size: 30px; font-weight: normal; margin: 0 0 4px; }
+#subtitle { color: #9baebf; font-size: 17px; margin-bottom: 10px; }
+button { font: 21px Arial, sans-serif; color: #eef8ff; border: 1px solid #4d718b; border-radius: 5px; background: #21394c; min-height: 50px; }
+button:active { background: #327a9c; }
+.tab { width: 202px; margin-right: 8px; }
+.selected { background: #0d6784; border-color: #75d5e9; }
+.view { display: none; padding-top: 12px; }
+.visible { display: block; }
+.result { background: #142b3a; color: #89e6ec; border-radius: 5px; padding: 8px 12px; font-size: 30px; margin-bottom: 12px; height: 46px; }
+.row { height: 43px; font-size: 19px; }
+.row label { display: inline-block; width: 210px; }
+.row input { font: 22px Arial, sans-serif; width: 170px; padding: 3px; color: #15232d; background: #e6eff6; border: 0; }
+.hint { font-size: 14px; color: #afc2d0; margin-top: 6px; }
+.key { width: 145px; min-height: 34px; margin: 0 7px 5px 0; }
+.timer { width: 202px; margin-right: 8px; }
+#calcpad { width: 640px; }
+</style></head><body>
+<div id="page">
+<h1>Local Apps</h1>
+<div id="subtitle">Offline tools &middot; emulator sandbox &middot; no vehicle controls</div>
+<div id="tabs">
+<button id="tab-cost" class="tab selected" onclick="show('cost')">Trip cost</button>
+<button id="tab-timer" class="tab" onclick="show('timer')">Parking timer</button>
+<button id="tab-calc" class="tab" onclick="show('calc')">Calculator</button>
+</div>
+<div id="cost" class="view visible">
+<div id="costresult" class="result">Estimated fuel cost: EUR 9.00</div>
+<div class="row"><label for="km">Distance (km)</label><input id="km" type="text" value="100" onkeyup="trip()" onchange="trip()"></div>
+<div class="row"><label for="fuel">Fuel (L / 100 km)</label><input id="fuel" type="text" value="5" onkeyup="trip()" onchange="trip()"></div>
+<div class="row"><label for="price">Price (EUR / L)</label><input id="price" type="text" value="1.80" onkeyup="trip()" onchange="trip()"></div>
+<div class="hint">Manual inputs only; no consumption data is read from the car.</div>
+</div>
+<div id="timer" class="view">
+<div id="timerresult" class="result">00:00:00</div>
+<button class="timer" onclick="startTimer()">Start</button>
+<button class="timer" onclick="pauseTimer()">Pause</button>
+<button class="timer" onclick="resetTimer()">Reset</button>
+<div class="hint">Elapsed time only; resets when this page is reloaded.</div>
+</div>
+<div id="calc" class="view">
+<div class="result"><span id="calcresult">0</span><button style="float:right;min-height:38px;width:100px;margin-top:-1px" onclick="key('=')">=</button></div>
+<div id="calcpad"></div>
+</div>
+</div>
+<script type="text/javascript">
+/* ES3-style JavaScript for the original embedded WebKit. No network,
+   native vehicle bridge, eval, cookies, storage or manufacturer service. */
+function el(id) { return document.getElementById(id); }
+function text(id, value) { var e = el(id); while (e.firstChild) e.removeChild(e.firstChild); e.appendChild(document.createTextNode(String(value))); }
+function show(name) {
+    var names = ['cost', 'timer', 'calc'], i;
+    for (i = 0; i < names.length; i++) {
+        el(names[i]).className = 'view' + (names[i] == name ? ' visible' : '');
+        el('tab-' + names[i]).className = 'tab' + (names[i] == name ? ' selected' : '');
+    }
+}
+function number(id) { var s = el(id).value.replace(',', '.'); return /^\s*\d+(\.\d+)?\s*$/.test(s) ? Number(s) : NaN; }
+function trip() {
+    var km = number('km'), fuel = number('fuel'), price = number('price'), cost = km * fuel * price / 100;
+    text('costresult', isFinite(cost) ? 'Estimated fuel cost: EUR ' + cost.toFixed(2) : 'Enter valid non-negative numbers');
+}
+var timerStart = null, timerElapsed = 0;
+function now() { return new Date().getTime(); }
+function pad(n) { return n < 10 ? '0' + n : String(n); }
+function drawTimer() {
+    var seconds = Math.floor((timerElapsed + (timerStart === null ? 0 : Math.max(0, now() - timerStart))) / 1000);
+    text('timerresult', pad(Math.floor(seconds / 3600)) + ':' + pad(Math.floor(seconds / 60) % 60) + ':' + pad(seconds % 60));
+}
+function startTimer() { if (timerStart === null) timerStart = now(); drawTimer(); }
+function pauseTimer() { if (timerStart !== null) timerElapsed += Math.max(0, now() - timerStart); timerStart = null; drawTimer(); }
+function resetTimer() { timerStart = null; timerElapsed = 0; drawTimer(); }
+setInterval(drawTimer, 1000);
+var entry = '0', accumulator = null, operator = null, fresh = false;
+function calculate(a, b, op) { return op == '+' ? a+b : op == '-' ? a-b : op == '*' ? a*b : b === 0 ? NaN : a/b; }
+function key(k) {
+    if (k == 'C') { entry = '0'; accumulator = null; operator = null; fresh = false; }
+    else if (k == '+' || k == '-' || k == '*' || k == '/' || k == '=') {
+        if (accumulator !== null && operator !== null && !fresh) entry = String(calculate(accumulator, Number(entry), operator));
+        accumulator = Number(entry); operator = k == '=' ? null : k; fresh = true;
+    } else {
+        if (fresh || !isFinite(Number(entry))) { entry = '0'; fresh = false; }
+        if (k == '.') { if (entry.indexOf('.') < 0) entry += '.'; }
+        else if (entry.length < 16) entry = entry == '0' ? k : entry + k;
+    }
+    if (!isFinite(Number(entry))) { text('calcresult', 'Cannot divide by zero'); accumulator = null; operator = null; fresh = true; }
+    else text('calcresult', entry);
+}
+(function () {
+    var keys = ['7','8','9','/','4','5','6','*','1','2','3','-','C','0','.','+'], i, b;
+    for (i = 0; i < keys.length; i++) {
+        b = document.createElement('button'); b.className = 'key';
+        b.appendChild(document.createTextNode(keys[i]));
+        b.onclick = (function (k) { return function () { key(k); }; })(keys[i]);
+        el('calcpad').appendChild(b);
+    }
+})();
+</script></body></html>

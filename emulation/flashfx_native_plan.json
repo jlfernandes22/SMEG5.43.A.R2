@@ -1,0 +1,46 @@
+{
+  "scope": "Synthetic writable emulated NAND only; execute existing guest functions through normal VxWorks shell. Firmware bytes unchanged.",
+  "preferred_path": "Erase synthetic NAND to0xff, supply a supported chip geometry and functional read/program/erase/OOB/ECC in NFC, then boot. Existing guest initializes BBM, creates VBF and formats DOSFS when their media formats are absent.",
+  "automatic_bbm": {
+    "settings_source_address": "0x0074356c",
+    "settings_bytes_hex": "0001000000000000",
+    "format_state": 1,
+    "format_type": 0,
+    "format_flags": 0,
+    "option_get": "FfxDriverOptionGet option0x2004 copies device config+0x20/+0x22/+0x24",
+    "format_on_missing_branch": "FfxBbmCreate0x0062212c checks state1 after mount failure, calls formatter0x0062432c then remounts."
+  },
+  "device_configuration": {
+    "constant_address": "0x0074355c",
+    "raw_words_hex": ["0x40000000", "0x0002cd00", "0x00000200", "0x00080000"],
+    "raw_settings_destination_offsets": ["0x10", "0x14", "0x18", "0x1c"],
+    "semantics": ["mapped base", "reserved bottom KiB (inferred)", "reserved top KiB (inferred)", "maximum array KiB (inferred)"],
+    "note": "Do not map logical DOSFS sector0 to physical NAND page0. BBM and reserved device regions intervene; let genuine FlashFX produce the mapping."
+  },
+  "disk_create_api": {
+    "symbol": "usrFlashFXDeviceInit62",
+    "address": "0x005c21e4",
+    "arguments_in_order": ["name", "disk_number", "device_number", "start_KiB", "length_KiB", "format_policy", "filesystem_id"],
+    "format_policy": {"0":"never autoformat", "1":"format allocator if absent", "2":"always format allocator"},
+    "filesystem_id": {"0":"no high-level format", "1":"VxWorks dosFs"},
+    "proof": "Arguments r3..r9 placed into local struct by0x005c2248..0x005c2264; FlashFXDiskCreate builds VBF then XBD; FfxDriverAllocatorCreate0x00605f24 checks policy and calls real formatter."
+  },
+  "root_disks": [
+    {"name":"/SYSTEM_DATA","disk":1,"device":0,"start_KiB":0,"length_KiB":2431,"start_hex":"0x0","length_hex":"0x97f","format_policy":1,"filesystem_id":1,"callsite":"0x00213a10"},
+    {"name":"/SYSTEM","disk":2,"device":0,"start_KiB":2432,"length_KiB":113535,"start_hex":"0x980","length_hex":"0x1bb7f","format_policy":1,"filesystem_id":1,"callsite":"0x0021afec"},
+    {"name":"/SYSTEM_TMP_DATA","disk":3,"device":0,"start_KiB":115968,"length_KiB":140543,"start_hex":"0x1c500","length_hex":"0x224ff","format_policy":1,"filesystem_id":1,"callsite":"0x0021b048"},
+    {"name":"/USER_DATA","disk":4,"device":0,"start_KiB":256512,"length_KiB":35711,"start_hex":"0x3ea00","length_hex":"0x8b7f","format_policy":1,"filesystem_id":1,"callsite":"0x0021b0a4"},
+    {"name":"/USER_DATA_BACKUP","disk":5,"device":0,"start_KiB":292224,"length_KiB":35711,"start_hex":"0x47580","length_hex":"0x8b7f","format_policy":1,"filesystem_id":1,"callsite":"0x0021b100"},
+    {"name":"/EXTENDED_PARTITION","disk":6,"device":0,"start_KiB":327935,"length_KiB":-1,"start_hex":"0x500ff","length_hex":"0xffffffff","format_policy":1,"filesystem_id":1,"callsite":"0x0021b170"}
+  ],
+  "start_length_rounding": "FfxDriverDiskAdjust0x00605068 takes erase_block_bytes>>10; start_KiB rounds UP to whole erase blocks, length_KiB rounds DOWN; length0xffffffff means remainder.",
+  "guest_shell_commands": {
+    "inspect": ["devs", "FlashFX", "ls \"/SYSTEM_DATA\""],
+    "retry_driver_if_initialization_failed": ["usrFlashFXInit62(0)"],
+    "create_missing_system_data_on_initialized_driver": ["usrFlashFXDeviceInit62(\"/SYSTEM_DATA\",1,0,0,0x97f,1,1)"],
+    "reformat_existing_synthetic_disk_if_required": ["FlashFXFormat(1,1)"],
+    "verify_mount": ["ls \"/SYSTEM_DATA\"", "open(\"/SYSTEM_DATA/.mount-probe\",0x202,0666)"],
+    "note": "Select calls based on actual guest state; do not repeat create on an existing mounted disk. The open probe must return a valid fd, then write/read/close it. Inspect exact shell parser and supported open flags before automated execution."
+  },
+  "filesystem_payload": "system_data.bin is a tar payload, not a preformatted FlashFX image. Copy extracted files into mounted DOSFS using normal guest file APIs after genuine mount; ssm_boot.out should preserve package content hash."
+}

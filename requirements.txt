@@ -1,0 +1,6 @@
+# Versions installed in the development environment for this research release.
+# PyGObject/dbus-python are optional live-HCI host packages, not basic dependencies.
+capstone==5.0.9
+pyelftools==0.33
+Pillow==12.3.0
+PyYAML==6.0.3
